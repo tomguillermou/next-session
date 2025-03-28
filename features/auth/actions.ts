@@ -77,4 +77,6 @@ export async function register(_: unknown, formData: FormData) {
 
 export async function logout() {
   await deleteSession()
+
+  redirect('/')
 }
