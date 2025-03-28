@@ -1,12 +1,11 @@
-# NextJS Starter 🚀
+# Next Session 🍪
 
-This is a Next template designed to start with basic functionnalities.
+This is an example implementation of cookie-based authentication with session stored in database.
 The structure of this project follows the React Bulletproof architecture.
 
 ## Tech Stack
 
 - **Database:** Postgres + Kysely
-- **Auth:** Better Auth
 - **Design System:** Shadcn
 
 ## Run Locally
@@ -14,13 +13,13 @@ The structure of this project follows the React Bulletproof architecture.
 Clone the project
 
 ```bash
-  git clone https://github.com/tomguillermou/next-starter.git
+  git clone https://github.com/tomguillermou/next-session.git
 ```
 
 Go to the project directory
 
 ```bash
-  cd next-starter
+  cd next-session
 ```
 
 Install dependencies
