@@ -3,23 +3,23 @@ import { LogoutButton } from '@/features/auth/components/logout-button'
 import { RegisterButton } from '@/features/auth/components/register-button'
 import { getSession } from '@/features/auth/session'
 
-export async function Navbar() {
+export async function Header() {
   const session = await getSession()
 
   return (
-    <nav className="flex items-center justify-between border-b p-4">
-      <h1 className="text-2xl font-bold">🍪 Next Session</h1>
+    <header>
+      <nav className="flex items-center justify-between border-b p-4">
+        <h1 className="text-2xl font-bold">🍪 Next Session</h1>
 
-      <div className="flex items-center gap-4">
         {session && <LogoutButton />}
 
         {!session && (
-          <>
+          <div className="flex items-center gap-4">
             <LoginButton />
             <RegisterButton />
-          </>
+          </div>
         )}
-      </div>
-    </nav>
+      </nav>
+    </header>
   )
 }
