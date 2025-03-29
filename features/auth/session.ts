@@ -25,12 +25,18 @@ export async function createSession(user: User) {
 }
 
 export const getSession = cache(async () => {
+  const now = new Date()
   const cookieStore = await cookies()
   const sessionId = cookieStore.get(SESSION_COOKIE_KEY)?.value
 
   if (!sessionId) return null
 
-  return getSessionById(sessionId)
+  const session = await getSessionById(sessionId)
+  const isInvalidSession = !session || now > session.expires_at
+
+  if (isInvalidSession) return null
+
+  return session
 })
 
 export async function deleteSession() {

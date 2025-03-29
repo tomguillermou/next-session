@@ -23,7 +23,6 @@ export async function getSessionById(sessionId: string) {
     .selectFrom('session')
     .selectAll()
     .where('id', '=', sessionId)
-    .where('expires_at', '>', new Date())
     .executeTakeFirst()
 
   return session || null
