@@ -1,6 +1,7 @@
 # Next Session 🍪
 
-This is an example implementation of cookie-based authentication with session stored in database.
+This is an example implementation of an email/password authentication with session stored in database and passed to client using cookies.
+
 The structure of this project follows the React Bulletproof architecture.
 
 ## Register
@@ -26,6 +27,7 @@ The structure of this project follows the React Bulletproof architecture.
 - Cookies use SameSite=Strict parameter to prevent CSRF attacks.
 - Session expires after 7 days.
 - Passwords are hashed with a unique salt before storage.
+- Password verification is done securely to prevent timing-based attacks.
 
 ## Tech Stack
 

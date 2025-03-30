@@ -26,6 +26,7 @@ interface UserTable {
   salt: string
   created_at: Generated<Date>
 }
+
 export type User = Selectable<UserTable>
 
 /**
@@ -37,4 +38,5 @@ interface SessionTable {
   expires_at: Date
   created_at: Generated<Date>
 }
-export type Session = Selectable<Database['session']>
+
+export type Session = Selectable<SessionTable>
