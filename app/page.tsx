@@ -5,8 +5,8 @@ export default function Home() {
     <>
       <Header />
 
-      <main className="flex h-screen flex-col items-center justify-center gap-12">
-        <h1 className="text-2xl font-bold">Home page</h1>
+      <main className="p-8">
+        <h1 className="text-center text-2xl font-bold">Home page</h1>
       </main>
     </>
   )

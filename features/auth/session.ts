@@ -1,6 +1,7 @@
 'use server'
 
 import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
 import { cache } from 'react'
 
 import { User } from '@/lib/database'
@@ -14,6 +15,7 @@ export async function createSession(user: User) {
   const expiresAt = new Date(Date.now() + SESSION_DURATION_MS)
 
   const cookieStore = await cookies()
+
   const session = await storeSession(user, expiresAt)
 
   cookieStore.set(SESSION_COOKIE_KEY, session.id, {
@@ -24,17 +26,19 @@ export async function createSession(user: User) {
   })
 }
 
-export const getSession = cache(async () => {
+export const getSession = cache(async ({ redirectToLogin = false } = {}) => {
   const now = new Date()
+
   const cookieStore = await cookies()
   const sessionId = cookieStore.get(SESSION_COOKIE_KEY)?.value
 
-  if (!sessionId) return null
+  if (!sessionId) return redirectToLogin ? redirect('/login') : null
 
   const session = await getSessionById(sessionId)
+
   const isInvalidSession = !session || now > session.expires_at
 
-  if (isInvalidSession) return null
+  if (isInvalidSession) return redirectToLogin ? redirect('/login') : null
 
   return session
 })
