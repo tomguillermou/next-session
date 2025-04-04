@@ -4,8 +4,10 @@ import { db } from '@/lib/database'
 
 const newUserSchema = z.object({
   email: z.string().email(),
-  password: z.string(),
-  salt: z.string(),
+  name: z.string(),
+  password: z.string().optional(),
+  salt: z.string().optional(),
+  access_token: z.string().optional(),
 })
 
 type NewUser = z.infer<typeof newUserSchema>

@@ -21,9 +21,11 @@ interface Database {
  */
 interface UserTable {
   id: Generated<number>
+  name: string
   email: string
-  password: string
-  salt: string
+  password: string | null
+  salt: string | null
+  access_token: string | null
   created_at: Generated<Date>
 }
 

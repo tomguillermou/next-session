@@ -15,10 +15,10 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
-import { register } from '../actions'
+import { registerEmail } from '../actions'
 
 export function RegisterForm() {
-  const [error, formAction, pending] = useActionState(register, undefined)
+  const [error, formAction, pending] = useActionState(registerEmail, undefined)
 
   return (
     <div className="grid w-full max-w-md gap-4">

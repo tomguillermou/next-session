@@ -15,10 +15,11 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
-import { login } from '../actions'
+import { loginEmail } from '../actions'
+import { GoogleLoginButton } from './google-login-button'
 
 export function LoginForm() {
-  const [error, formAction, pending] = useActionState(login, undefined)
+  const [error, formAction, pending] = useActionState(loginEmail, undefined)
 
   return (
     <div className="grid w-full max-w-md gap-4">
@@ -33,7 +34,7 @@ export function LoginForm() {
             Enter your email below to login to your account
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-4">
           <form action={formAction} className="grid gap-4">
             <div>
               <Label htmlFor="email">Email</Label>
@@ -65,7 +66,9 @@ export function LoginForm() {
             </Button>
           </form>
 
-          <div className="mt-4 text-center text-sm">
+          <GoogleLoginButton />
+
+          <div className="text-center text-sm">
             Don&apos;t have an account?{' '}
             <Link href="/register" className="underline underline-offset-4">
               Register

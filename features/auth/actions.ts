@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation'
 import { z } from 'zod'
 
 import { getUser, storeUser } from './api/user'
+import { getGoogleAuthUrl } from './google'
 import { createSession, deleteCurrentSession } from './session'
 import { comparePassword, generateSalt, hashPassword } from './utils/password'
 
@@ -12,7 +13,7 @@ const loginSchema = z.object({
   password: z.string(),
 })
 
-export async function login(_: unknown, formData: FormData) {
+export async function loginEmail(_: unknown, formData: FormData) {
   try {
     const { data: form, error } = loginSchema.safeParse({
       email: formData.get('email'),
@@ -25,7 +26,7 @@ export async function login(_: unknown, formData: FormData) {
 
     const user = await getUser(form.email)
 
-    if (!user) {
+    if (!user || !user.password || !user.salt) {
       return 'Invalid credentials'
     }
 
@@ -58,7 +59,7 @@ const registerSchema = z.object({
     .regex(/[0-9]/, 'Password must contain at least one digit'),
 })
 
-export async function register(_: unknown, formData: FormData) {
+export async function registerEmail(_: unknown, formData: FormData) {
   try {
     const { data: form, error } = registerSchema.safeParse({
       email: formData.get('email'),
@@ -80,6 +81,7 @@ export async function register(_: unknown, formData: FormData) {
 
     const user = await storeUser({
       email: form.email,
+      name: form.email,
       password: hash,
       salt,
     })
@@ -98,4 +100,10 @@ export async function logout() {
   await deleteCurrentSession()
 
   redirect('/')
+}
+
+export async function loginGoogle() {
+  const authUrl = await getGoogleAuthUrl()
+
+  redirect(authUrl)
 }
