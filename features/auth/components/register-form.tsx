@@ -16,6 +16,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
 import { registerEmail } from '../actions'
+import { GoogleLoginButton } from './google-login-button'
 
 export function RegisterForm() {
   const [error, formAction, pending] = useActionState(registerEmail, undefined)
@@ -33,7 +34,7 @@ export function RegisterForm() {
             Enter your email below to create an account
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-4">
           <form action={formAction} className="grid gap-4">
             <div>
               <Label htmlFor="email">Email</Label>
@@ -65,7 +66,9 @@ export function RegisterForm() {
             </Button>
           </form>
 
-          <div className="mt-4 text-center text-sm">
+          <GoogleLoginButton />
+
+          <div className="text-center text-sm">
             Already have an account?{' '}
             <Link href="/login" className="underline underline-offset-4">
               Login
