@@ -3,8 +3,8 @@
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
 
-import { getUserByEmail, storeUser } from './api/user'
-import { createSession, deleteSession } from './session'
+import { getUser, storeUser } from './api/user'
+import { createSession, deleteCurrentSession } from './session'
 import { comparePassword, generateSalt, hashPassword } from './utils/password'
 
 const loginSchema = z.object({
@@ -23,7 +23,7 @@ export async function login(_: unknown, formData: FormData) {
       return 'Invalid format'
     }
 
-    const user = await getUserByEmail(form.email)
+    const user = await getUser(form.email)
 
     if (!user) {
       return 'Invalid credentials'
@@ -69,7 +69,7 @@ export async function register(_: unknown, formData: FormData) {
       return error.issues[0].message
     }
 
-    const existingUser = await getUserByEmail(form.email)
+    const existingUser = await getUser(form.email)
 
     if (existingUser) {
       return 'User already exists'
@@ -95,7 +95,7 @@ export async function register(_: unknown, formData: FormData) {
 }
 
 export async function logout() {
-  await deleteSession()
+  await deleteCurrentSession()
 
   redirect('/')
 }

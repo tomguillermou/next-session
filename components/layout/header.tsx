@@ -3,10 +3,10 @@ import Link from 'next/link'
 import { LoginButton } from '@/features/auth/components/login-button'
 import { LogoutButton } from '@/features/auth/components/logout-button'
 import { RegisterButton } from '@/features/auth/components/register-button'
-import { getSession } from '@/features/auth/session'
+import { getCurrentSession } from '@/features/auth/session'
 
 export async function Header() {
-  const session = await getSession()
+  const session = await getCurrentSession()
 
   return (
     <header>

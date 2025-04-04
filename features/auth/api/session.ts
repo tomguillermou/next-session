@@ -18,7 +18,7 @@ export async function storeSession(user: User, expiresAt: Date) {
   return newSession
 }
 
-export async function getSessionById(sessionId: string) {
+export async function getSession(sessionId: string) {
   const session = await db
     .selectFrom('session')
     .selectAll()
@@ -28,6 +28,6 @@ export async function getSessionById(sessionId: string) {
   return session || null
 }
 
-export async function deleteSessionById(sessionId: string) {
+export async function deleteSession(sessionId: string) {
   await db.deleteFrom('session').where('id', '=', sessionId).executeTakeFirst()
 }

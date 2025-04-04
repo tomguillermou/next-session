@@ -1,8 +1,14 @@
+import { redirect } from 'next/navigation'
+
 import { Header } from '@/components/layout/header'
-import { getSession } from '@/features/auth/session'
+import { getCurrentSession } from '@/features/auth/session'
 
 export default async function Page() {
-  await getSession({ redirectToLogin: true })
+  const session = await getCurrentSession()
+
+  if (!session) {
+    redirect('/')
+  }
 
   return (
     <>
