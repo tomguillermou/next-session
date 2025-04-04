@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-import { getUser, storeUser } from '@/features/auth/api/user'
+import { getUserByEmail, storeUser } from '@/features/auth/api/user'
 import { getGoogleToken, getGoogleUser } from '@/features/auth/google'
 import { createSession } from '@/features/auth/session'
 
@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
 
   const googleUser = await getGoogleUser(access_token)
 
-  let user = await getUser(googleUser.email)
+  let user = await getUserByEmail(googleUser.email)
 
   if (!user) {
     user = await storeUser({

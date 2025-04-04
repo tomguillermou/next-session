@@ -3,7 +3,7 @@
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
 
-import { getUser, storeUser } from './api/user'
+import { getUserByEmail, storeUser } from './api/user'
 import { getGoogleAuthUrl } from './google'
 import { createSession, deleteCurrentSession } from './session'
 import { comparePassword, generateSalt, hashPassword } from './utils/password'
@@ -24,7 +24,7 @@ export async function loginEmail(_: unknown, formData: FormData) {
       return 'Invalid format'
     }
 
-    const user = await getUser(form.email)
+    const user = await getUserByEmail(form.email)
 
     if (!user || !user.password || !user.salt) {
       return 'Invalid credentials'
@@ -70,7 +70,7 @@ export async function registerEmail(_: unknown, formData: FormData) {
       return error.issues[0].message
     }
 
-    const existingUser = await getUser(form.email)
+    const existingUser = await getUserByEmail(form.email)
 
     if (existingUser) {
       return 'User already exists'

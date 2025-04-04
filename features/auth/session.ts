@@ -1,5 +1,4 @@
 import { cookies } from 'next/headers'
-import { cache } from 'react'
 
 import { User } from '@/lib/database'
 
@@ -23,7 +22,7 @@ export async function createSession(user: User) {
   })
 }
 
-export const getCurrentSession = cache(async () => {
+export async function getCurrentSession() {
   const now = new Date()
 
   const cookieStore = await cookies()
@@ -40,13 +39,15 @@ export const getCurrentSession = cache(async () => {
   }
 
   return session
-})
+}
 
 export async function deleteCurrentSession() {
   const cookieStore = await cookies()
   const sessionId = cookieStore.get(SESSION_COOKIE_KEY)?.value
 
-  if (!sessionId) return
+  if (!sessionId) {
+    return
+  }
 
   await deleteSession(sessionId)
 

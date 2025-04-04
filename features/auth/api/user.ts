@@ -24,7 +24,17 @@ export async function storeUser(newUser: NewUser) {
     .executeTakeFirstOrThrow()
 }
 
-export async function getUser(email: string) {
+export async function getUserById(id: number) {
+  const user = await db
+    .selectFrom('user')
+    .selectAll()
+    .where('id', '=', id)
+    .executeTakeFirst()
+
+  return user || null
+}
+
+export async function getUserByEmail(email: string) {
   const user = await db
     .selectFrom('user')
     .selectAll()
