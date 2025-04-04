@@ -21,7 +21,7 @@ export function LoginForm() {
   const [error, formAction, pending] = useActionState(login, undefined)
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="grid w-full max-w-md gap-4">
       <Link href="/" className="text-center text-2xl font-bold">
         🏠 Home
       </Link>
@@ -34,43 +34,43 @@ export function LoginForm() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form action={formAction}>
-            <div className="flex flex-col gap-6">
-              <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  placeholder="m@example.com"
-                  required
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="password">Password</Label>
-                <Input
-                  id="password"
-                  name="password"
-                  type="password"
-                  placeholder="********"
-                  required
-                />
-              </div>
-
-              {error && <p className="text-sm text-destructive">{error}</p>}
-
-              <Button className="w-full" type="submit" disabled={pending}>
-                {pending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Login
-              </Button>
+          <form action={formAction} className="grid gap-4">
+            <div>
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="m@example.com"
+                required
+              />
             </div>
-            <div className="mt-4 text-center text-sm">
-              Don&apos;t have an account?{' '}
-              <Link href="/register" className="underline underline-offset-4">
-                Register
-              </Link>
+
+            <div>
+              <Label htmlFor="password">Password</Label>
+              <Input
+                id="password"
+                name="password"
+                type="password"
+                placeholder="********"
+                required
+              />
             </div>
+
+            {error && <p className="text-sm text-destructive">{error}</p>}
+
+            <Button className="w-full" type="submit" disabled={pending}>
+              {pending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              Login
+            </Button>
           </form>
+
+          <div className="mt-4 text-center text-sm">
+            Don&apos;t have an account?{' '}
+            <Link href="/register" className="underline underline-offset-4">
+              Register
+            </Link>
+          </div>
         </CardContent>
       </Card>
     </div>

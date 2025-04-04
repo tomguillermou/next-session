@@ -7,23 +7,27 @@ import { getUserByEmail, storeUser } from './api/user'
 import { createSession, deleteSession } from './session'
 import { comparePassword, generateSalt, hashPassword } from './utils/password'
 
-const credentialSchema = z.object({
-  email: z.string().email(),
+const loginSchema = z.object({
+  email: z.string(),
   password: z.string(),
 })
 
 export async function login(_: unknown, formData: FormData) {
   try {
-    const { data: form, error } = credentialSchema.safeParse({
+    const { data: form, error } = loginSchema.safeParse({
       email: formData.get('email'),
       password: formData.get('password'),
     })
 
-    if (error) return 'Invalid format'
+    if (error) {
+      return 'Invalid format'
+    }
 
     const user = await getUserByEmail(form.email)
 
-    if (!user) return 'Invalid credentials'
+    if (!user) {
+      return 'Invalid credentials'
+    }
 
     const isCorrectPassword = await comparePassword(
       form.password,
@@ -31,7 +35,9 @@ export async function login(_: unknown, formData: FormData) {
       user.salt
     )
 
-    if (!isCorrectPassword) return 'Invalid credentials'
+    if (!isCorrectPassword) {
+      return 'Invalid credentials'
+    }
 
     await createSession(user)
   } catch (error) {
@@ -43,18 +49,31 @@ export async function login(_: unknown, formData: FormData) {
   redirect('/')
 }
 
+const registerSchema = z.object({
+  email: z.string().email(),
+  password: z
+    .string()
+    .min(8, 'Password must be at least 8 characters long')
+    .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
+    .regex(/[0-9]/, 'Password must contain at least one digit'),
+})
+
 export async function register(_: unknown, formData: FormData) {
   try {
-    const { data: form, error } = credentialSchema.safeParse({
+    const { data: form, error } = registerSchema.safeParse({
       email: formData.get('email'),
       password: formData.get('password'),
     })
 
-    if (error) return 'Invalid format'
+    if (error) {
+      return error.issues[0].message
+    }
 
     const existingUser = await getUserByEmail(form.email)
 
-    if (existingUser) return 'User already exists'
+    if (existingUser) {
+      return 'User already exists'
+    }
 
     const salt = generateSalt()
     const hash = await hashPassword(form.password, salt)
