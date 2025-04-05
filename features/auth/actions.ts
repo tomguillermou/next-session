@@ -14,38 +14,32 @@ const loginSchema = z.object({
 })
 
 export async function loginEmail(_: unknown, formData: FormData) {
-  try {
-    const { data: form, error } = loginSchema.safeParse({
-      email: formData.get('email'),
-      password: formData.get('password'),
-    })
+  const { data: form, error } = loginSchema.safeParse({
+    email: formData.get('email'),
+    password: formData.get('password'),
+  })
 
-    if (error) {
-      return 'Invalid format'
-    }
-
-    const user = await getUserByEmail(form.email)
-
-    if (!user || !user.password || !user.salt) {
-      return 'Invalid credentials'
-    }
-
-    const isCorrectPassword = await comparePassword(
-      form.password,
-      user.password,
-      user.salt
-    )
-
-    if (!isCorrectPassword) {
-      return 'Invalid credentials'
-    }
-
-    await createSession(user)
-  } catch (error) {
-    console.error(error)
-
-    return 'Something went wrong'
+  if (error) {
+    return error.issues[0].message
   }
+
+  const user = await getUserByEmail(form.email)
+
+  if (!user || !user.password || !user.salt) {
+    return 'Incorrect email or password'
+  }
+
+  const isCorrectPassword = await comparePassword(
+    form.password,
+    user.password,
+    user.salt
+  )
+
+  if (!isCorrectPassword) {
+    return 'Incorrect email or password'
+  }
+
+  await createSession(user)
 
   redirect('/')
 }
@@ -60,38 +54,32 @@ const registerSchema = z.object({
 })
 
 export async function registerEmail(_: unknown, formData: FormData) {
-  try {
-    const { data: form, error } = registerSchema.safeParse({
-      email: formData.get('email'),
-      password: formData.get('password'),
-    })
+  const { data: form, error } = registerSchema.safeParse({
+    email: formData.get('email'),
+    password: formData.get('password'),
+  })
 
-    if (error) {
-      return error.issues[0].message
-    }
-
-    const existingUser = await getUserByEmail(form.email)
-
-    if (existingUser) {
-      return 'User already exists'
-    }
-
-    const salt = generateSalt()
-    const hash = await hashPassword(form.password, salt)
-
-    const user = await storeUser({
-      email: form.email,
-      name: form.email,
-      password: hash,
-      salt,
-    })
-
-    await createSession(user)
-  } catch (error) {
-    console.error(error)
-
-    return 'Something went wrong'
+  if (error) {
+    return error.issues[0].message
   }
+
+  const existingUser = await getUserByEmail(form.email)
+
+  if (existingUser) {
+    return 'User already exists'
+  }
+
+  const salt = generateSalt()
+  const hash = await hashPassword(form.password, salt)
+
+  const user = await storeUser({
+    email: form.email,
+    name: form.email,
+    password: hash,
+    salt,
+  })
+
+  await createSession(user)
 
   redirect('/')
 }
