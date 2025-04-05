@@ -5,8 +5,8 @@ import { z } from 'zod'
 
 import { getUserByEmail, storeUser } from './api/user'
 import { getGoogleAuthUrl } from './google'
+import { comparePassword, generateSalt, hashPassword } from './password'
 import { createSession, deleteCurrentSession } from './session'
-import { comparePassword, generateSalt, hashPassword } from './utils/password'
 
 const loginSchema = z.object({
   email: z.string(),
