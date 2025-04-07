@@ -1,3 +1,5 @@
+import 'server-only'
+
 import { Generated, Kysely, PostgresDialect, Selectable } from 'kysely'
 import { Pool } from 'pg'
 
